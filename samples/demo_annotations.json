@@ -1,0 +1,38 @@
+{
+  "1.4_page_0 (7).png": {
+    "name": "1.4 Page 0 (7)",
+    "detections": [
+      { "label": "name", "score": 0.97, "bbox": [540, 880, 1810, 1100] },
+      { "label": "id_number", "score": 0.96, "bbox": [540, 1330, 1800, 1600] },
+      { "label": "father_name", "score": 0.93, "bbox": [540, 1700, 1780, 1970] },
+      { "label": "dob", "score": 0.91, "bbox": [1980, 680, 2970, 840] }
+    ]
+  },
+  "passportfront_7.jpg": {
+    "name": "Passportfront 7",
+    "detections": [
+      { "label": "name", "score": 0.95, "bbox": [55, 75, 290, 130] },
+      { "label": "passport_no", "score": 0.96, "bbox": [55, 150, 290, 210] },
+      { "label": "dob", "score": 0.94, "bbox": [220, 260, 360, 320] },
+      { "label": "expiry", "score": 0.91, "bbox": [220, 330, 360, 390] }
+    ]
+  },
+  "passportboth_2.jpg": {
+    "name": "Passportboth 2",
+    "detections": [
+      { "label": "name", "score": 0.94, "bbox": [60, 70, 300, 130] },
+      { "label": "passport_no", "score": 0.95, "bbox": [60, 145, 300, 210] },
+      { "label": "nationality", "score": 0.92, "bbox": [55, 245, 220, 310] },
+      { "label": "expiry", "score": 0.9, "bbox": [220, 330, 360, 390] }
+    ]
+  },
+  "aadhaarsmallboth_30.jpg": {
+    "name": "Aadhaarsmallboth 30",
+    "detections": [
+      { "label": "name", "score": 0.93, "bbox": [50, 70, 305, 135] },
+      { "label": "aadhaar_no", "score": 0.98, "bbox": [50, 150, 320, 215] },
+      { "label": "dob", "score": 0.92, "bbox": [210, 255, 345, 318] },
+      { "label": "address", "score": 0.9, "bbox": [50, 255, 210, 340] }
+    ]
+  }
+}

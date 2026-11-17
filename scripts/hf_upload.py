@@ -16,6 +16,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import configparser
 import json
 import os
 from pathlib import Path
@@ -43,6 +44,54 @@ def sanitize_config(raw: dict) -> dict:
     }
 
 
+def parse_config_ini(config_path: Path) -> dict:
+    """Read the project config.ini and return the model settings."""
+    parser = configparser.ConfigParser()
+    parser.read(config_path, encoding="utf-8")
+    if "model" not in parser:
+        raise ValueError(f"Missing [model] section in {config_path}")
+
+    model_cfg = parser["model"]
+    return {
+        "source": model_cfg.get("source", "local").strip(),
+        "dir": model_cfg.get("dir", "model").strip(),
+        "onnx_file": model_cfg.get("onnx_file", "model.onnx").strip(),
+        "config_file": model_cfg.get("config_file", "config.json").strip(),
+        "hf_repo": model_cfg.get("hf_repo", "").strip(),
+        "hf_subpath": model_cfg.get("hf_subpath", "").strip(),
+        "hf_revision": model_cfg.get("hf_revision", "main").strip(),
+    }
+
+
+def relevant_model_files(model_dir: Path, onnx_name: str, config_name: str) -> list[Path]:
+    """Return all model artifacts that should be uploaded with the ONNX bundle."""
+    files: list[Path] = []
+
+    config_path = model_dir / config_name
+    if config_path.exists():
+        files.append(config_path)
+
+    onnx_path = model_dir / onnx_name
+    if onnx_path.exists():
+        files.append(onnx_path)
+
+    onnx_stem = Path(onnx_name).stem
+    for child in sorted(model_dir.iterdir()):
+        if not child.is_file():
+            continue
+        name = child.name
+        if name == config_name:
+            continue
+        if name == onnx_name:
+            continue
+        if name.startswith(f"{onnx_stem}.onnx") or name.startswith(f"{onnx_name}."):
+            files.append(child)
+
+    # Upload the sanitized config first, then the ONNX payloads.
+    files = list(dict.fromkeys(files))
+    return files
+
+
 def upload_model(
     repo_id: str,
     subpath: str,
@@ -59,16 +108,16 @@ def upload_model(
             "Export a Hugging Face token with write permissions before running this script."
         )
 
-    onnx_path = model_dir / onnx_name
-    config_path = model_dir / config_name
-    if not onnx_path.exists():
-        raise FileNotFoundError(f"ONNX model not found: {onnx_path}")
-    if not config_path.exists():
-        raise FileNotFoundError(f"Config JSON not found: {config_path}")
+    model_dir = model_dir.resolve()
+    if not model_dir.exists() or not model_dir.is_dir():
+        raise FileNotFoundError(f"Model directory not found: {model_dir}")
+
+    files = relevant_model_files(model_dir, onnx_name, config_name)
+    if not files:
+        raise FileNotFoundError(f"No model artifacts found in {model_dir}")
 
     api = HfApi(token=token)
 
-    # 1. Create or ensure the private model repository exists
     repo_url = api.create_repo(
         repo_id=repo_id,
         repo_type="model",
@@ -77,13 +126,12 @@ def upload_model(
     )
     print(f"Repository ready: {repo_url} (private={not public})")
 
-    # 2. Initialize a minimal README.md if the repo does not have one yet
     try:
-        files = api.list_repo_files(repo_id=repo_id, repo_type="model", revision=revision)
+        uploaded_files = api.list_repo_files(repo_id=repo_id, repo_type="model", revision=revision)
     except Exception:
-        files = []
+        uploaded_files = []
 
-    if "README.md" not in files:
+    if "README.md" not in uploaded_files:
         api.upload_file(
             path_or_fileobj=PRIVATE_REPO_README.encode("utf-8"),
             path_in_repo="README.md",
@@ -94,58 +142,75 @@ def upload_model(
         )
         print("Initialized README.md in repository root.")
 
-    # 3. Sanitize config.json in memory before uploading so no model/variant IP leaks
-    with open(config_path, "r", encoding="utf-8") as f:
-        sanitized = sanitize_config(json.load(f))
-    sanitized_bytes = json.dumps(sanitized, indent=2).encode("utf-8")
-
     prefix = subpath.strip("/")
-    onnx_repo_path = f"{prefix}/{onnx_name}" if prefix else onnx_name
-    cfg_repo_path = f"{prefix}/{config_name}" if prefix else config_name
+    uploaded_targets: list[str] = []
 
-    # 4. Upload config.json and model.onnx (HF Hub automatically stores large .onnx files via Git LFS / Xet)
-    api.upload_file(
-        path_or_fileobj=sanitized_bytes,
-        path_in_repo=cfg_repo_path,
-        repo_id=repo_id,
-        repo_type="model",
-        revision=revision,
-        commit_message=f"Upload {cfg_repo_path}",
-    )
-    print(f"Uploaded {cfg_repo_path}")
+    for file_path in files:
+        rel_name = file_path.name
+        repo_path = f"{prefix}/{rel_name}" if prefix else rel_name
 
-    api.upload_file(
-        path_or_fileobj=str(onnx_path),
-        path_in_repo=onnx_repo_path,
-        repo_id=repo_id,
-        repo_type="model",
-        revision=revision,
-        commit_message=f"Upload {onnx_repo_path}",
-    )
-    print(f"Uploaded {onnx_repo_path}")
-    print(f"Done! Update config.ini with source = huggingface, hf_repo = {repo_id}, hf_subpath = {prefix}")
+        if file_path.name == config_name:
+            with open(file_path, "r", encoding="utf-8") as f:
+                sanitized = sanitize_config(json.load(f))
+            payload = json.dumps(sanitized, indent=2).encode("utf-8")
+            api.upload_file(
+                path_or_fileobj=payload,
+                path_in_repo=repo_path,
+                repo_id=repo_id,
+                repo_type="model",
+                revision=revision,
+                commit_message=f"Upload {repo_path}",
+            )
+            print(f"Uploaded {repo_path}")
+            uploaded_targets.append(repo_path)
+            continue
+
+        api.upload_file(
+            path_or_fileobj=str(file_path),
+            path_in_repo=repo_path,
+            repo_id=repo_id,
+            repo_type="model",
+            revision=revision,
+            commit_message=f"Upload {repo_path}",
+        )
+        print(f"Uploaded {repo_path}")
+        uploaded_targets.append(repo_path)
+
+    print(f"Done! Uploaded {len(uploaded_targets)} file(s) to {repo_id}/{prefix or '.'}")
+    print(f"Update config.ini with source = huggingface, hf_repo = {repo_id}, hf_subpath = {prefix}")
 
 
 def main() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    default_config = repo_root / "config.ini"
+
     parser = argparse.ArgumentParser(
-        description="Initialize a private Hugging Face Hub repository and upload an ONNX model + config.json."
+        description="Initialize a private Hugging Face Hub repository and upload model artifacts from config.ini."
     )
-    parser.add_argument("--repo-id", required=True, help="HF repo ID (e.g. khushalR/doc-models-private)")
-    parser.add_argument("--subpath", default="id-field-detector", help="Subfolder inside the repo for this model")
-    parser.add_argument("--model-dir", default=Path("model"), type=Path, help="Local directory containing model.onnx and config.json")
+    parser.add_argument("--repo-id", help="HF repo ID (e.g. khushalR/doc-models-private). Overrides config.ini value.")
+    parser.add_argument("--subpath", help="Subfolder inside the repo for this model. Overrides config.ini value.")
+    parser.add_argument("--model-dir", type=Path, help="Local directory containing model artifacts. Overrides config.ini model.dir.")
     parser.add_argument("--onnx-name", default="model.onnx", help="ONNX filename inside --model-dir")
     parser.add_argument("--config-name", default="config.json", help="Config filename inside --model-dir")
     parser.add_argument("--revision", default="main", help="Target branch or revision")
     parser.add_argument("--public", action="store_true", help="Create as public repo (default is private)")
+    parser.add_argument("--config", type=Path, default=default_config, help="Path to config.ini used for repo metadata")
     args = parser.parse_args()
 
+    cfg = parse_config_ini(args.config)
+    repo_id = args.repo_id or cfg["hf_repo"]
+    subpath = args.subpath or cfg["hf_subpath"]
+    model_dir = args.model_dir or Path(cfg["dir"]).expanduser()
+    if not repo_id:
+        raise ValueError("No Hugging Face repo configured. Set hf_repo in config.ini or pass --repo-id.")
+
     upload_model(
-        repo_id=args.repo_id,
-        subpath=args.subpath,
-        model_dir=args.model_dir,
+        repo_id=repo_id,
+        subpath=subpath,
+        model_dir=model_dir,
         onnx_name=args.onnx_name,
         config_name=args.config_name,
-        revision=args.revision,
+        revision=args.revision or cfg["hf_revision"],
         public=args.public,
     )
 

@@ -9,3 +9,4 @@ node_modules
 *.pt
 *.pth
 *.onnx
+__pycache__
