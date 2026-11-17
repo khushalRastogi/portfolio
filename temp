@@ -1,0 +1,9 @@
+python scripts/export_onnx.py \
+    --model-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Medium/Iteration-4-3rd_Plus_Aadhaar_VID_plus_VoterID_Addition \
+    --checkpoint yoloX_M_iter4.pth \
+    --output-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Medium-ONNX/Iteration-4-3rd_Plus_Aadhaar_VID_plus_VoterID_Addition
+
+python scripts/hf_upload.py \
+    --repo-id khushalR/id_cards_extractor \
+    --subpath indian_id_models/YoloX-Medium-ONNX/Iteration-4-3rd_Plus_Aadhaar_VID_plus_VoterID_Addition \
+    --model-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Medium-ONNX/Iteration-4-3rd_Plus_Aadhaar_VID_plus_VoterID_Addition

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive ID card field detection and redaction workbench.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232a3cff'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0f1b2d">
+<title>Try it out — ID Field Detection | Khushal Rastogi</title>
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-latin.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url(fonts/newsreader-latin.woff2) format("woff2");font-weight:400 500;font-style:normal;font-display:swap}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--paper:#eef1f6;--sheet:#fff;--ink:#0f1b2d;--mut:#52607a;--line:#cdd5e2;--stamp:#2a3cff;--hl:#ffe45c;--hlt:#0f1b2d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0c1424;--sheet:#141e33;--ink:#e8edf7;--mut:#9aa8c3;--line:#26334f;--stamp:#8c9bff;--hl:#e6c93a;--hlt:#0c1424}}
+:root[data-theme="dark"]{--paper:#0c1424;--sheet:#141e33;--ink:#e8edf7;--mut:#9aa8c3;--line:#26334f;--stamp:#8c9bff;--hl:#e6c93a;--hlt:#0c1424}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.6 Newsreader,Georgia,serif}
+h1,h2,h3,button,input,label,.ui,.meta,.lab{font-family:"Bricolage Grotesque",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header div{max-width:1200px;margin:auto;padding:12px 20px;display:flex;align-items:center;gap:20px}
+header strong{font:800 1.05rem "Bricolage Grotesque",sans-serif;margin-right:auto}
+header strong a{text-decoration:none}
+nav{display:flex;gap:18px}
+nav a{text-decoration:none;font-weight:600;font-size:.92rem;color:var(--mut);white-space:nowrap}
+nav a:hover,nav a[aria-current="page"]{color:var(--ink)}
+.tg{background:none;border:1px solid var(--line);color:var(--ink);padding:5px 12px;border-radius:99px;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.wrap{max-width:1200px;margin:auto;padding:36px 20px 64px}
+.intro{margin-bottom:28px;border-bottom:2px solid var(--ink);padding-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+h1{font-weight:800;font-size:clamp(1.85rem,4vw,2.75rem);line-height:1.05;letter-spacing:-.025em;text-wrap:balance}
+.lead{color:var(--mut);max-width:60ch;margin-top:8px;font-size:1.06rem}
+.btn{font-weight:600;font-size:.9rem;padding:9px 16px;border-radius:6px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn.p{background:var(--ink);color:var(--paper)}
+.btn[aria-pressed="true"]{background:var(--stamp);border-color:var(--stamp);color:#fff}
+.btn.sm{padding:6px 12px;font-size:.82rem;border-color:var(--line)}
+.btn.sm:hover{border-color:var(--ink)}
+.wb{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,1fr);gap:28px;align-items:start}
+@media(max-width:900px){.wb{grid-template-columns:1fr}}
+.sources{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.sample-strip{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+.sample-btn{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--sheet);color:var(--ink);cursor:pointer;font-size:.86rem;font-weight:600;text-align:left;transition:border-color .15s}
+.sample-btn img{width:48px;height:30px;object-fit:cover;border-radius:3px;border:1px solid var(--line);display:block}
+.sample-btn[aria-pressed="true"]{border-color:var(--stamp);box-shadow:0 0 0 1px var(--stamp)}
+.upload-label{position:relative;overflow:hidden}
+.upload-label input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.stage-card{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:18px;box-shadow:0 1px 0 var(--line),0 18px 40px -22px rgba(15,27,45,.25)}
+.stage-card.drag{border-color:var(--stamp);border-style:dashed}
+.stage-viewport{position:relative;width:100%;display:flex;justify-content:center;align-items:center;min-height:280px;background:color-mix(in srgb,var(--paper) 60%,transparent);border-radius:4px;overflow:hidden}
+.img-wrap{position:relative;display:inline-block;max-width:100%;line-height:0}
+.img-wrap img{display:block;max-width:100%;max-height:62vh;width:auto;height:auto;user-select:none}
+.overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:auto}
+.overlay g.box{cursor:pointer}
+.overlay g.box.off{opacity:.14}
+.overlay g.box.hi rect.frame{stroke-width:4}
+.meta-bar{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:14px;font-size:.86rem;color:var(--mut);font-variant-numeric:tabular-nums}
+.meta-bar span strong{color:var(--ink);font-weight:600}
+.notice{margin-top:12px;padding:10px 14px;border:1px solid var(--line);border-radius:4px;background:color-mix(in srgb,var(--stamp) 7%,var(--sheet));color:var(--ink);font-size:.88rem;line-height:1.45}
+.notice.err{background:color-mix(in srgb,#dc2626 10%,var(--sheet));border-color:#dc2626}
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:18px}
+.panel-block{padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.panel-block:last-child{padding-bottom:0;margin-bottom:0;border-bottom:0}
+.panel-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.panel-h h2{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.slider-row{display:flex;align-items:center;gap:12px}
+.slider-row input[type="range"]{flex:1;accent-color:var(--stamp);cursor:pointer}
+.num{font-variant-numeric:tabular-nums;font-weight:700;font-size:.92rem;min-width:44px;text-align:right}
+.field-list{display:flex;flex-direction:column;gap:2px;max-height:420px;overflow-y:auto}
+.cls-group{border-top:1px solid var(--line);padding:10px 0}
+.cls-group:first-child{border-top:0;padding-top:4px}
+.cls-row{display:flex;align-items:center;gap:10px;width:100%}
+.cls-toggle{display:flex;align-items:center;gap:9px;flex:1;background:none;border:0;color:var(--ink);font-weight:600;font-size:.94rem;cursor:pointer;text-align:left;padding:4px 0}
+.swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.cls-count{font-size:.82rem;color:var(--mut);font-variant-numeric:tabular-nums}
+.box-sublist{display:flex;flex-direction:column;gap:4px;margin:6px 0 2px 21px}
+.box-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 8px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--ink);font-size:.8rem;cursor:pointer;text-align:left;font-variant-numeric:tabular-nums}
+.box-item[aria-pressed="false"]{opacity:.5;text-decoration:line-through}
+.box-item:hover{border-color:var(--stamp)}
+.empty{color:var(--mut);font-size:.92rem;padding:12px 0}
+.loading-pill{font-size:.86rem;color:var(--stamp);font-weight:600}
+footer{max-width:1200px;margin:auto;padding:0 20px 36px;color:var(--mut);font-size:.88rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div>
+<strong><a href="/">Khushal Rastogi</a></strong>
+<nav><a href="/">Home</a><a href="/#systems">Work</a><a href="/try-it-out" aria-current="page">Try it out</a></nav>
+<button class="tg" id="theme" type="button">Theme</button>
+</div></header>
+
+<main class="wrap">
+<section class="intro">
+<div>
+<h1>ID Field Detection</h1>
+<p class="lead">Select a sample identity card or upload an image from your device to inspect detected field positions, adjust confidence filtering, and toggle field boxes or redaction.</p>
+</div>
+<a class="btn sm" href="/">Back to portfolio</a>
+</section>
+
+<div class="wb">
+<section aria-label="Document canvas">
+<div class="sources">
+<div class="sample-strip" id="sample-strip" role="group" aria-label="Sample ID cards"></div>
+<label class="btn p upload-label">Upload image<input id="file-input" type="file" accept="image/png,image/jpeg,image/webp,image/bmp"></label>
+</div>
+
+<div class="stage-card" id="drop-zone">
+<div class="stage-viewport" id="stage-viewport">
+<div class="img-wrap" id="img-wrap" hidden>
+<img id="preview-img" alt="Identity document preview">
+<svg id="overlay-svg" class="overlay" xmlns="http://www.w3.org/2000/svg" aria-label="Detected field bounding boxes"></svg>
+</div>
+<p class="empty" id="stage-empty">Choose a sample ID above or drop an image here.</p>
+</div>
+
+<div class="meta-bar" id="meta-bar">
+<span>Visible fields: <strong id="m-visible">0 / 0</strong></span>
+<span aria-hidden="true">·</span>
+<span>Detection time: <strong id="m-time">--</strong></span>
+<span aria-hidden="true">·</span>
+<span>Resolution: <strong id="m-size">--</strong></span>
+<span class="loading-pill" id="loading-status" hidden>Detecting fields...</span>
+</div>
+<div class="notice" id="notice-box" hidden></div>
+</div>
+</section>
+
+<aside class="panel" aria-label="Detection controls">
+<div class="panel-block">
+<div class="panel-h"><h2>Display mode</h2></div>
+<div class="actions">
+<button class="btn sm" id="btn-redact" type="button" aria-pressed="false">Redact fields</button>
+<button class="btn sm" id="btn-scores" type="button" aria-pressed="true">Confidence scores</button>
+<button class="btn sm" id="btn-reset" type="button">Reset</button>
+</div>
+</div>
+
+<div class="panel-block">
+<div class="panel-h">
+<h2>Confidence threshold</h2>
+<span class="num" id="conf-val">0.50</span>
+</div>
+<div class="slider-row">
+<input id="conf-slider" type="range" min="0.15" max="0.95" step="0.01" value="0.50" aria-label="Minimum confidence threshold">
+</div>
+</div>
+
+<div class="panel-block">
+<div class="panel-h">
+<h2>Detected fields</h2>
+<div class="actions">
+<button class="btn sm" id="btn-all" type="button">Select all</button>
+<button class="btn sm" id="btn-none" type="button">Clear all</button>
+</div>
+</div>
+<div class="field-list" id="field-list">
+<p class="empty">Run detection on a sample or uploaded image to inspect fields.</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+
+<footer>Khushal Rastogi, Delhi.</footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+const savedTheme=localStorage.getItem("theme");
+if(savedTheme==="dark"||savedTheme==="light")document.documentElement.dataset.theme=savedTheme;
+$("#theme").onclick=()=>{
+  const d=document.documentElement;
+  const cur=d.dataset.theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+  const next=cur==="dark"?"light":"dark";
+  d.dataset.theme=next;
+  localStorage.setItem("theme",next);
+};
+
+const PALETTE=["#2a3cff","#0f766e","#b45309","#9333ea","#be123c","#0369a1","#4d7c0f","#c2410c","#1d4ed8","#047857"];
+function colorForLabel(label){
+  let h=0;
+  for(let i=0;i<label.length;i++)h=(h*31+label.charCodeAt(i))>>>0;
+  return PALETTE[h%PALETTE.length];
+}
+
+const state={
+  samples:[],
+  activeSampleId:null,
+  detections:[],
+  disabledIds:new Set(),
+  hoveredId:null,
+  imageSize:{width:900,height:560},
+  defaultConf:0.5,
+  confThre:0.5,
+  redact:false,
+  showScores:true,
+  inferenceMs:null,
+  notice:null,
+  isError:false,
+  loading:false,
+  objectUrl:null
+};
+
+function setNotice(msg,isError=false){
+  state.notice=msg;
+  state.isError=isError;
+  const el=$("#notice-box");
+  if(!msg){el.hidden=true;el.textContent="";el.classList.remove("err");return}
+  el.hidden=false;
+  el.textContent=msg;
+  el.classList.toggle("err",isError);
+}
+
+function setLoading(flag){
+  state.loading=flag;
+  $("#loading-status").hidden=!flag;
+}
+
+function getAboveThreshold(){
+  return state.detections.filter(d=>d.score>=state.confThre);
+}
+
+function renderOverlay(){
+  const svg=$("#overlay-svg");
+  const {width,height}=state.imageSize;
+  svg.setAttribute("viewBox",`0 0 ${width} ${height}`);
+  svg.innerHTML="";
+
+  const candidates=getAboveThreshold();
+  let visibleCount=0;
+  const fontSize=Math.max(12,Math.round(width*0.015));
+  const strokeW=Math.max(2,Math.round(width*0.0028));
+  const padX=Math.max(5,Math.round(fontSize*0.42));
+  const badgeH=fontSize+8;
+
+  for(const det of candidates){
+    const isOn=!state.disabledIds.has(det.id);
+    if(isOn)visibleCount++;
+
+    const [x1,y1,x2,y2]=det.bbox;
+    const w=Math.max(2,x2-x1);
+    const h=Math.max(2,y2-y1);
+    const color=colorForLabel(det.label);
+
+    const g=document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("class",`box${isOn?"":" off"}${state.hoveredId===det.id?" hi":""}`);
+    g.setAttribute("data-id",String(det.id));
+    g.setAttribute("role","button");
+    g.setAttribute("tabindex","0");
+    g.setAttribute("aria-label",`${det.label} ${det.score.toFixed(2)}, click to toggle`);
+
+    if(state.redact&&isOn){
+      const mask=document.createElementNS("http://www.w3.org/2000/svg","rect");
+      mask.setAttribute("x",x1);
+      mask.setAttribute("y",y1);
+      mask.setAttribute("width",w);
+      mask.setAttribute("height",h);
+      mask.setAttribute("rx","3");
+      mask.setAttribute("fill","#0f1b2d");
+      mask.setAttribute("fill-opacity","0.96");
+      mask.setAttribute("stroke",color);
+      mask.setAttribute("stroke-width",strokeW);
+      mask.setAttribute("class","frame");
+      g.appendChild(mask);
+    }else{
+      const rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
+      rect.setAttribute("x",x1);
+      rect.setAttribute("y",y1);
+      rect.setAttribute("width",w);
+      rect.setAttribute("height",h);
+      rect.setAttribute("rx","3");
+      rect.setAttribute("fill",color);
+      rect.setAttribute("fill-opacity",isOn?"0.10":"0.02");
+      rect.setAttribute("stroke",color);
+      rect.setAttribute("stroke-width",strokeW);
+      rect.setAttribute("class","frame");
+      g.appendChild(rect);
+    }
+
+    if(isOn){
+      const txt=state.showScores?`${det.label} ${det.score.toFixed(2)}`:det.label;
+      const badgeW=Math.max(44,Math.round(txt.length*fontSize*0.58+padX*2));
+      const badgeY=y1>=badgeH+2?y1-badgeH:y1+2;
+      const badgeX=Math.min(x1,Math.max(0,width-badgeW));
+
+      const bg=document.createElementNS("http://www.w3.org/2000/svg","rect");
+      bg.setAttribute("x",badgeX);
+      bg.setAttribute("y",badgeY);
+      bg.setAttribute("width",badgeW);
+      bg.setAttribute("height",badgeH);
+      bg.setAttribute("rx","3");
+      bg.setAttribute("fill",state.redact?"#0f1b2d":color);
+      g.appendChild(bg);
+
+      const labelEl=document.createElementNS("http://www.w3.org/2000/svg","text");
+      labelEl.setAttribute("x",badgeX+padX);
+      labelEl.setAttribute("y",badgeY+badgeH-Math.round(fontSize*0.32));
+      labelEl.setAttribute("fill","#ffffff");
+      labelEl.setAttribute("font-family","Bricolage Grotesque, system-ui, sans-serif");
+      labelEl.setAttribute("font-size",fontSize);
+      labelEl.setAttribute("font-weight","700");
+      labelEl.textContent=txt;
+      g.appendChild(labelEl);
+    }
+
+    const toggleBox=()=>{
+      if(state.disabledIds.has(det.id))state.disabledIds.delete(det.id);
+      else state.disabledIds.add(det.id);
+      renderAll();
+    };
+    g.onclick=toggleBox;
+    g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleBox()}};
+    svg.appendChild(g);
+  }
+
+  $("#m-visible").textContent=`${visibleCount} / ${candidates.length}`;
+  $("#m-time").textContent=state.inferenceMs!==null?`${state.inferenceMs} ms`:"--";
+  $("#m-size").textContent=`${width} × ${height}`;
+}
+
+function renderFieldList(){
+  const list=$("#field-list");
+  const candidates=getAboveThreshold();
+  if(!candidates.length){
+    list.innerHTML=`<p class="empty">${state.detections.length?"No detections meet the current confidence threshold.":"No fields detected for this image."}</p>`;
+    return;
+  }
+
+  const groups=new Map();
+  for(const det of candidates){
+    if(!groups.has(det.label))groups.set(det.label,[]);
+    groups.get(det.label).push(det);
+  }
+
+  list.innerHTML="";
+  for(const [label,items] of groups.entries()){
+    const enabledItems=items.filter(i=>!state.disabledIds.has(i.id));
+    const allOn=enabledItems.length===items.length;
+    const color=colorForLabel(label);
+
+    const grp=document.createElement("div");
+    grp.className="cls-group";
+
+    const row=document.createElement("div");
+    row.className="cls-row";
+
+    const toggleBtn=document.createElement("button");
+    toggleBtn.type="button";
+    toggleBtn.className="cls-toggle";
+    toggleBtn.setAttribute("aria-pressed",String(allOn));
+    toggleBtn.innerHTML=`<input type="checkbox" ${allOn?"checked":""} tabindex="-1" aria-hidden="true"><span class="swatch" style="background:${color}"></span><span>${label}</span>`;
+    toggleBtn.onclick=()=>{
+      if(allOn)items.forEach(i=>state.disabledIds.add(i.id));
+      else items.forEach(i=>state.disabledIds.delete(i.id));
+      renderAll();
+    };
+
+    const count=document.createElement("span");
+    count.className="cls-count";
+    count.textContent=`${enabledItems.length}/${items.length}`;
+
+    row.appendChild(toggleBtn);
+    row.appendChild(count);
+    grp.appendChild(row);
+
+    const sub=document.createElement("div");
+    sub.className="box-sublist";
+    items.forEach((item,idx)=>{
+      const isOn=!state.disabledIds.has(item.id);
+      const b=document.createElement("button");
+      b.type="button";
+      b.className="box-item";
+      b.setAttribute("aria-pressed",String(isOn));
+      b.innerHTML=`<span>Box #${idx+1} · [${item.bbox.join(", ")}]</span><span>${item.score.toFixed(2)}</span>`;
+      b.onclick=()=>{
+        if(state.disabledIds.has(item.id))state.disabledIds.delete(item.id);
+        else state.disabledIds.add(item.id);
+        renderAll();
+      };
+      b.onmouseenter=()=>{state.hoveredId=item.id;renderOverlay()};
+      b.onmouseleave=()=>{state.hoveredId=null;renderOverlay()};
+      sub.appendChild(b);
+    });
+    grp.appendChild(sub);
+    list.appendChild(grp);
+  }
+}
+
+function renderAll(){
+  $("#btn-redact").setAttribute("aria-pressed",String(state.redact));
+  $("#btn-scores").setAttribute("aria-pressed",String(state.showScores));
+  $("#conf-val").textContent=state.confThre.toFixed(2);
+  $("#conf-slider").value=String(state.confThre);
+  renderOverlay();
+  renderFieldList();
+}
+
+function applyDetectionResponse(data){
+  const boxes=Array.isArray(data.bboxes)?data.bboxes:[];
+  const labels=Array.isArray(data.label)?data.label:[];
+  const scores=Array.isArray(data.scores)?data.scores:[];
+
+  state.detections=boxes.map((bbox,idx)=>({
+    id:idx,
+    bbox,
+    label:labels[idx]||"field",
+    score:typeof scores[idx]==="number"?scores[idx]:1
+  }));
+  state.disabledIds.clear();
+  state.imageSize=data.imageSize||{width:900,height:560};
+  state.inferenceMs=typeof data.inferenceMs==="number"?data.inferenceMs:null;
+  if(typeof data.defaultConfThre==="number"){
+    state.defaultConf=data.defaultConfThre;
+    state.confThre=data.defaultConfThre;
+  }
+  setNotice(data.notice||null,false);
+  renderAll();
+}
+
+function showPreviewImage(src){
+  $("#stage-empty").hidden=true;
+  $("#img-wrap").hidden=false;
+  $("#preview-img").src=src;
+}
+
+async function runSample(sample){
+  if(state.objectUrl){URL.revokeObjectURL(state.objectUrl);state.objectUrl=null}
+  state.activeSampleId=sample.id;
+  $$(".sample-btn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===sample.id?"true":"false"));
+  showPreviewImage(sample.url);
+  setLoading(true);
+  setNotice(null);
+  try{
+    const resp=await fetch("/api/detect",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({sampleId:sample.id})
+    });
+    const data=await resp.json();
+    if(!resp.ok)throw new Error(data.error||"Detection failed.");
+    applyDetectionResponse(data);
+  }catch(err){
+    setNotice(err.message||"Unable to run field detection.",true);
+  }finally{
+    setLoading(false);
+  }
+}
+
+async function runUpload(file){
+  if(!file)return;
+  if(state.objectUrl)URL.revokeObjectURL(state.objectUrl);
+  state.objectUrl=URL.createObjectURL(file);
+  state.activeSampleId=null;
+  $$(".sample-btn").forEach(b=>b.setAttribute("aria-pressed","false"));
+  showPreviewImage(state.objectUrl);
+  setLoading(true);
+  setNotice(null);
+  try{
+    const fd=new FormData();
+    fd.append("image",file);
+    const resp=await fetch("/api/detect",{method:"POST",body:fd});
+    const data=await resp.json();
+    if(!resp.ok)throw new Error(data.error||"Upload detection failed.");
+    applyDetectionResponse(data);
+  }catch(err){
+    setNotice(err.message||"Unable to process uploaded image.",true);
+  }finally{
+    setLoading(false);
+  }
+}
+
+$("#file-input").onchange=e=>{
+  const file=e.target.files?.[0];
+  if(file)runUpload(file);
+  e.target.value="";
+};
+
+const dz=$("#drop-zone");
+dz.ondragover=e=>{e.preventDefault();dz.classList.add("drag")};
+dz.ondragleave=()=>dz.classList.remove("drag");
+dz.ondrop=e=>{
+  e.preventDefault();
+  dz.classList.remove("drag");
+  const file=e.dataTransfer?.files?.[0];
+  if(file)runUpload(file);
+};
+
+$("#btn-redact").onclick=()=>{state.redact=!state.redact;renderAll()};
+$("#btn-scores").onclick=()=>{state.showScores=!state.showScores;renderAll()};
+$("#btn-reset").onclick=()=>{
+  state.redact=false;
+  state.showScores=true;
+  state.confThre=state.defaultConf;
+  state.disabledIds.clear();
+  renderAll();
+};
+$("#conf-slider").oninput=e=>{
+  state.confThre=parseFloat(e.target.value);
+  renderAll();
+};
+$("#btn-all").onclick=()=>{
+  state.disabledIds.clear();
+  renderAll();
+};
+$("#btn-none").onclick=()=>{
+  getAboveThreshold().forEach(d=>state.disabledIds.add(d.id));
+  renderAll();
+};
+
+async function init(){
+  try{
+    const [cfgRes,sampRes]=await Promise.all([fetch("/api/workbench-config"),fetch("/api/samples")]);
+    if(cfgRes.ok){
+      const cfg=await cfgRes.json();
+      if(typeof cfg.defaultConfThre==="number"){
+        state.defaultConf=cfg.defaultConfThre;
+        state.confThre=cfg.defaultConfThre;
+      }
+    }
+    if(sampRes.ok){
+      const {samples}=await sampRes.json();
+      state.samples=samples||[];
+      const strip=$("#sample-strip");
+      strip.innerHTML="";
+      state.samples.forEach(s=>{
+        const btn=document.createElement("button");
+        btn.type="button";
+        btn.className="sample-btn";
+        btn.dataset.id=s.id;
+        btn.setAttribute("aria-pressed","false");
+        btn.innerHTML=`<img src="${s.url}" alt="${s.name}" loading="lazy"><span>${s.name}</span>`;
+        btn.onclick=()=>runSample(s);
+        strip.appendChild(btn);
+      });
+      if(state.samples.length>0){
+        await runSample(state.samples[0]);
+      }
+    }
+  }catch{
+    setNotice("Unable to load workbench configuration.",true);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

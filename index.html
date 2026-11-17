@@ -48,6 +48,7 @@ h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);text-wrap:balance;line-h
 .cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
 .btn{font-weight:600;font-size:.95rem;padding:10px 18px;border-radius:6px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
 .btn.p{background:var(--ink);color:var(--paper)}
+.btn.try{border-color:var(--stamp);color:var(--stamp)}
 /* document demo */
 .doc{position:relative;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:22px 22px 24px;box-shadow:0 1px 0 var(--line),0 18px 40px -22px rgba(15,27,45,.35);overflow:hidden}
 .dt{font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--mut);margin-bottom:14px}
@@ -167,6 +168,7 @@ footer{max-width:1040px;margin:auto;padding:0 20px 40px;color:var(--mut);font-si
 <button class="btn p" id="det" type="button">Detect fields</button>
 <button class="btn" id="red" type="button">Redact</button>
 <button class="btn" id="rst" type="button">Reset</button>
+<a class="btn try" href="/try-it-out">Try it out</a>
 </div>
 <div class="ctl"><div class="seg" role="group" aria-label="Pipeline">
 <button type="button" data-p="cpu" aria-pressed="true">CPU pipeline</button>

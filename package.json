@@ -1,0 +1,15 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node --check server.js && node --check lib/detector.js",
+    "lint": "node --check server.js && node --check lib/detector.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

@@ -4,6 +4,8 @@ Thumbs.db
 node_modules
 .env
 .env.*
+!.env.example
+.model-cache
 *.pt
 *.pth
 *.onnx
