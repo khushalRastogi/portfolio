@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Senior Data Scientist at Newgen Software. Document intelligence, RAG and agentic systems from research to production, and the team that ships them.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232a3cff'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0f1b2d">
+<link rel="canonical" href="https://YOUR-SITE.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Khushal Rastogi: Senior Data Scientist">
+<meta property="og:description" content="Document intelligence, RAG and agentic systems from research to production, and the team that ships them.">
+<meta property="og:url" content="https://YOUR-SITE.vercel.app/">
+<meta property="og:image" content="https://YOUR-SITE.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<title>Khushal Rastogi: Senior Data Scientist, research to production</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--paper:#eef1f6;--sheet:#fff;--ink:#0f1b2d;--mut:#52607a;--line:#cdd5e2;--stamp:#2a3cff;--hl:#ffe45c;--hlt:#0f1b2d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0c1424;--sheet:#141e33;--ink:#e8edf7;--mut:#9aa8c3;--line:#26334f;--stamp:#8c9bff;--hl:#e6c93a;--hlt:#0c1424}}
+:root[data-theme="dark"]{--paper:#0c1424;--sheet:#141e33;--ink:#e8edf7;--mut:#9aa8c3;--line:#26334f;--stamp:#8c9bff;--hl:#e6c93a;--hlt:#0c1424}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font:400 18px/1.62 Newsreader,Georgia,serif}
+h1,h2,h3,button,.f,.fig b,nav a,.lab{font-family:"Bricolage Grotesque",system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--stamp);outline-offset:3px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header div{max-width:1040px;margin:auto;padding:12px 20px;display:flex;align-items:center;gap:20px}
+header strong{font:800 1.05rem "Bricolage Grotesque",sans-serif;margin-right:auto}
+nav{display:flex;gap:18px}nav a{text-decoration:none;font-weight:600;font-size:.92rem;color:var(--mut)}nav a:hover{color:var(--ink)}
+@media(max-width:560px){nav a:not(:last-child){display:none}}
+.tg{background:none;border:1px solid var(--line);color:var(--ink);padding:5px 12px;border-radius:99px;font-size:.85rem;font-weight:600;cursor:pointer}
+.w{max-width:1040px;margin:auto;padding:64px 20px}
+.hero{display:grid;gap:44px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center;padding-top:48px}
+h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.02;letter-spacing:-.025em;font-variation-settings:"opsz" 96}
+.sub{margin-top:20px;font-size:1.2rem;max-width:34ch;color:var(--mut)}
+.cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-weight:600;font-size:.95rem;padding:10px 18px;border-radius:6px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
+.btn.p{background:var(--ink);color:var(--paper)}
+/* document demo */
+.doc{position:relative;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:22px 22px 24px;box-shadow:0 1px 0 var(--line),0 18px 40px -22px rgba(15,27,45,.35);overflow:hidden}
+.dt{font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--mut);margin-bottom:14px}
+.top{display:flex;gap:16px;align-items:flex-start}
+.col{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding-top:4px}
+.f{position:relative;display:inline-block;margin-top:11px;padding:2px 7px;border:1.5px solid transparent;border-radius:3px;font-weight:600;font-size:.95rem;transition:border-color .25s,background .35s,color .35s}
+.f.on{border-color:var(--stamp)}
+.f.on::after{content:attr(data-l) " " attr(data-c);position:absolute;top:-11px;left:-1px;background:var(--stamp);color:var(--paper);font-size:.64rem;font-weight:600;padding:0 5px;border-radius:2px;line-height:1.5;white-space:nowrap}
+.ph{width:76px;height:92px;padding:0;background:radial-gradient(circle at 50% 34%,var(--mut) 0 14px,transparent 15px),radial-gradient(ellipse at 50% 100%,var(--mut) 0 32px,transparent 33px),var(--line)}
+.qr{width:62px;height:62px;padding:0;background:conic-gradient(var(--ink) 25%,transparent 0 50%,var(--ink) 0 75%,transparent 0) 0 0/15px 15px}
+.row2{display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px;gap:10px}
+.sig{font:italic 400 1.5rem Newsreader,serif;font-weight:400;padding:4px 10px}
+.stp{width:74px;height:74px;padding:0;border-radius:50%;border:3px double var(--stamp);color:var(--stamp);display:grid;place-items:center;transform:rotate(-12deg);font-size:.72rem}
+.doc.redact .f.on[data-s]{background:var(--ink);color:transparent;border-color:var(--ink)}
+.doc.redact .f.on[data-s]::after{background:var(--ink);color:var(--paper)}
+.doc.redact .ph.on,.doc.redact .stp.on{background:var(--ink)}
+.doc.scan::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--stamp);box-shadow:0 0 14px 2px var(--stamp);animation:sc 2.4s linear}
+@keyframes sc{from{top:0}to{top:100%}}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:none;color:var(--ink);padding:8px 14px;font-weight:600;font-size:.88rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.stg{list-style:none;padding:0;margin-top:14px;display:grid;gap:6px}
+.stg li{display:flex;gap:10px;align-items:baseline;padding:8px 12px;border-left:3px solid var(--line);color:var(--mut);transition:.3s;font-size:1rem}
+.stg li.lit{border-color:var(--stamp);color:var(--ink);background:var(--sheet)}
+.stg b{font:800 .9rem "Bricolage Grotesque",sans-serif;color:var(--stamp)}
+.note{font-size:.88rem;color:var(--mut);margin-top:10px}
+h2{font-weight:800;font-size:clamp(1.6rem,3.6vw,2.3rem);letter-spacing:-.02em;line-height:1.1;margin-bottom:8px}
+.lead{color:var(--mut);max-width:58ch;margin-bottom:26px}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:26px 20px;border-top:2px solid var(--ink);padding-top:22px}
+.fig b{display:block;font-weight:800;font-size:2.3rem;letter-spacing:-.03em;line-height:1}
+.fig span{display:block;margin-top:6px;font-size:.95rem;color:var(--mut);line-height:1.35}
+/* systems */
+.sys details{border-top:1px solid var(--line);transition:background .25s}
+.sys details:last-child{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:4px 18px;padding:18px 4px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary h3{font-weight:600;font-size:1.28rem;letter-spacing:-.01em;grid-column:1}
+summary::after{content:"+";grid-column:2;grid-row:1;font:600 1.5rem "Bricolage Grotesque",sans-serif;color:var(--stamp)}
+details[open] summary::after{content:"\2212"}
+.res{grid-column:1/-1;color:var(--mut);font-size:1rem}
+.pb{padding:0 4px 20px;max-width:68ch}
+.pb li{margin:6px 0 6px 1.1em}
+.sys details.hit h3{background:var(--hl);color:var(--hlt);padding:0 6px;margin-left:-6px;width:fit-content}
+.sys details.dim{opacity:.4}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:99px;padding:6px 14px;font-weight:600;font-size:.88rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--stamp);border-color:var(--stamp);color:var(--paper)}
+/* path */
+.path div{display:grid;grid-template-columns:150px 1fr;gap:6px 24px;padding:16px 0;border-top:1px solid var(--line)}
+.path .lab{font-weight:600;color:var(--mut);font-size:.95rem}
+.path h3{font-weight:600;font-size:1.12rem}
+.path p{color:var(--mut);font-size:1rem}
+@media(max-width:560px){.path div{grid-template-columns:1fr}}
+.end{border-top:2px solid var(--ink)}
+.end h2{max-width:20ch;font-size:clamp(1.8rem,5vw,3rem)}
+#links{display:flex;gap:10px 22px;flex-wrap:wrap;margin-top:22px;font:600 1.05rem "Bricolage Grotesque",sans-serif}
+#links a{text-decoration-thickness:2px;text-underline-offset:5px;text-decoration-color:var(--stamp)}
+footer{max-width:1040px;margin:auto;padding:0 20px 40px;color:var(--mut);font-size:.88rem}
+.pnl[hidden]{display:none}
+.tabs{margin-bottom:14px}
+.q{font:600 1rem "Bricolage Grotesque",sans-serif;background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:14px 16px}
+.stg li span em{font-style:normal;font-weight:600;color:var(--ink)}
+.rng{display:grid;grid-template-columns:130px 1fr 1fr;border-top:2px solid var(--ink)}
+.rng>div{padding:14px 18px 14px 0;border-bottom:1px solid var(--line);font-size:1rem}
+.rng .ch,.rng .rl{font:600 .95rem "Bricolage Grotesque",sans-serif}
+.rng .ch{color:var(--mut)}.rng .rl{color:var(--stamp)}
+@media(max-width:700px){.rng{grid-template-columns:1fr}.rng .ch{display:none}.rng .rl{border-bottom:0;padding-bottom:0;padding-top:18px}.rng>div[data-l]::before{content:attr(data-l);display:block;font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--mut)}}
+.grp{font:600 1rem "Bricolage Grotesque",sans-serif;color:var(--stamp);margin:30px 0 8px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px 32px;margin-bottom:20px}
+.two h3{font-weight:600;font-size:1.15rem;margin-bottom:4px}.two p{color:var(--mut)}
+.ev{padding:0;list-style:none;border-top:1px solid var(--line)}.ev li{padding:10px 0;border-bottom:1px solid var(--line)}
+::selection{background:var(--hl);color:var(--hlt)}
+.tags{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+.tags i{font:600 .72rem "Bricolage Grotesque",sans-serif;font-style:normal;border:1px solid var(--line);border-radius:99px;padding:1px 10px;color:var(--mut)}
+.ln{margin-bottom:16px}.ln .lab{display:block;font-weight:600;color:var(--mut);font-size:.9rem;margin-bottom:6px}
+.out{margin-top:20px;border-left:4px solid var(--stamp);background:var(--sheet);padding:14px 18px;max-width:62ch}
+.out strong{font:600 1.15rem "Bricolage Grotesque",sans-serif}.out p{color:var(--mut);margin-top:4px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.doc.scan::before{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div>
+<strong>Khushal Rastogi</strong>
+<nav><a href="#range">Range</a><a href="#systems">Work</a><a href="#lead">Leading</a><a href="#path">Path</a><a href="#contact">Contact</a></nav>
+<button class="tg" id="theme" type="button">Theme</button>
+</div></header>
+
+<main>
+<section class="w hero">
+<div>
+<h1>I take AI from research to production and lead the team that ships it.</h1>
+<p class="sub">Senior Data Scientist at Newgen Software. Four years across document intelligence, RAG, agentic systems and ML platforms for banks, government and global enterprises.</p>
+<div class="cta"><a class="btn p" href="#systems">See the work</a><a class="btn" href="#contact">Get in touch</a></div>
+</div>
+<div class="lab">
+<div class="seg tabs" role="group" aria-label="Demo"><button type="button" data-tab="doc" aria-pressed="true">Document AI</button><button type="button" data-tab="rag" aria-pressed="false">RAG</button><button type="button" data-tab="agt" aria-pressed="false">Agent loop</button></div>
+<div class="pnl" id="p-doc">
+<div class="doc" id="doc" aria-label="Interactive demo of ID card field detection and redaction">
+<p class="dt">Sample identity card, synthetic data</p>
+<div class="top">
+<span class="f ph" data-l="photo" data-c="0.99" data-s></span>
+<div class="col">
+<span class="f" data-l="name" data-c="0.98" data-s>Anita Sharma</span>
+<span class="f" data-l="dob" data-c="0.97" data-s>01 Jan 1990</span>
+<span class="f" data-l="id_number" data-c="0.99" data-s>ID-000-111-222</span>
+</div></div>
+<span class="f" data-l="address" data-c="0.94" data-s>12 Example Lane, Sector 0, Delhi</span>
+<div class="row2">
+<span class="f qr" data-l="qr" data-c="0.99"></span>
+<span class="f sig" data-l="signature" data-c="0.91" data-s>A. Sharma</span>
+<span class="f stp" data-l="stamp" data-c="0.96">Verified</span>
+</div>
+</div>
+<div class="ctl">
+<button class="btn p" id="det" type="button">Detect fields</button>
+<button class="btn" id="red" type="button">Redact</button>
+<button class="btn" id="rst" type="button">Reset</button>
+</div>
+<div class="ctl"><div class="seg" role="group" aria-label="Pipeline">
+<button type="button" data-p="cpu" aria-pressed="true">CPU pipeline</button>
+<button type="button" data-p="gpu" aria-pressed="false">GPU pipeline</button></div></div>
+<ol class="stg" id="stg"></ol>
+<p class="note" id="pn"></p>
+<p class="note">Illustrative demo. The card is fictional and confidence scores are for display.</p>
+</div>
+<div class="pnl" id="p-rag" hidden>
+<p class="dt">Illustrative query trace</p>
+<p class="q" id="q-rag"></p>
+<ol class="stg" id="stg-rag"></ol>
+<div class="ctl"><button class="btn p" type="button" data-run="rag">Run again</button><span class="note" id="ps-rag"></span></div>
+<p class="note">Illustrative trace, not a real client query.</p>
+</div>
+<div class="pnl" id="p-agt" hidden>
+<p class="dt">Illustrative agent loop</p>
+<p class="q" id="q-agt"></p>
+<ol class="stg" id="stg-agt"></ol>
+<div class="ctl"><button class="btn p" type="button" data-run="agt">Run again</button><span class="note" id="ps-agt"></span></div>
+<p class="note">Illustrative trace, not a real client task.</p>
+</div>
+</div>
+</section>
+
+<section class="w" style="padding-top:8px">
+<div class="figs">
+<div class="fig"><b data-n="40" data-s="+">40+</b><span>customer-facing POCs led</span></div>
+<div class="fig"><b data-n="17" data-s="+">17+</b><span>production use cases on the GenAI platform I co-built</span></div>
+<div class="fig"><b data-n="97" data-s="%+">97%+</b><span>document classification accuracy, trade finance</span></div>
+<div class="fig"><b data-n="96.8" data-d="1" data-s="%">96.8%</b><span>mAP@50 on ID field detection</span></div>
+<div class="fig"><b data-n="100" data-s="ms">100ms</b><span>P95 latency, ID extraction</span></div>
+<div class="fig"><b data-n="12" data-s="%">12%</b><span>reduction in customer churn</span></div>
+</div>
+</section>
+
+<section class="w" id="range" style="padding-top:8px">
+<h2>Full range</h2>
+<p class="lead">Research, development and deployment, across vertical solutions and horizontal platforms.</p>
+<div class="rng">
+<div class="ch"></div><div class="ch">Vertical solutions</div><div class="ch">Horizontal platforms</div>
+<div class="rl">Research</div>
+<div data-l="Vertical solutions">Model selection per document type across layout-aware NLP, VLMs, detectors and OCR. Detector pipeline versus a single VLM call for ID extraction.</div>
+<div data-l="Horizontal platforms">Quantisation and knowledge transfer to cut serving cost. 40+ customer POCs to test feasibility early.</div>
+<div class="rl">Development</div>
+<div data-l="Vertical solutions">Trade finance, ID cards and invoices: detection, extraction, table structure, validation and business rules.</div>
+<div data-l="Horizontal platforms">RAG with query decomposition and hybrid vector and relational retrieval. An agentic framework for annotation and extraction. A cloud-native Data Science Studio.</div>
+<div class="rl">Deployment</div>
+<div data-l="Vertical solutions">CPU and GPU, on-premise and cloud. ID extraction at 100ms P95.</div>
+<div data-l="Horizontal platforms">One GenAI platform serving 17+ production use cases. Real-time ML for structured data.</div>
+<div class="rl">Leading</div>
+<div data-l="Vertical solutions">Led trade finance delivery and onboarded two new bank clients.</div>
+<div data-l="Horizontal platforms">Lead data scientists and AI engineers across platform and solution work.</div>
+</div>
+</section>
+<section class="w sys" id="systems">
+<h2>Work</h2>
+<p class="lead">Platforms first, then the solutions. Open one, or tap a tool below to see where it ran.</p>
+<h3 class="grp">Horizontal platforms</h3>
+<details data-t="rag emb hybrid quant vlm"><summary><h3>Generative AI platform</h3><span class="tags"><i>Co-built</i><i>In production</i></span><span class="res">Co-built. Powers 17+ production use cases.</span></summary>
+<div class="pb"><ul>
+<li>Chunking strategies, embedding pipelines, query decomposition and RAG workflows.</li>
+<li>Hybrid vector and relational retrieval.</li>
+<li>Model optimisation through quantisation and knowledge transfer.</li></ul></div></details>
+<details data-t="agents vlm"><summary><h3>Agentic extraction and annotation framework</h3><span class="tags"><i>Building</i><i>Deployed in-house</i></span><span class="res">Loop-based agents, generalised to any image classification or extraction use case.</span></summary>
+<div class="pb"><ul>
+<li>Agent loops for extraction and annotation workflows.</li>
+<li>Deployed in-house to speed up how new use cases get built.</li></ul></div></details>
+<details data-t="ocr nlp"><summary><h3>IDP platform and Data Science Studio</h3><span class="tags"><i>Designed</i><i>Cloud-native</i></span><span class="res">12% lower churn. New users onboarded 50%+ faster.</span></summary>
+<div class="pb"><ul>
+<li>Intelligent document processing for semi-structured and unstructured documents: preprocessing, OCR, layout-aware understanding, vectorisation, downstream inference.</li>
+<li>A cloud-native studio for structured-data models: loan risk, pre-approval, CECL, churn prediction and ATM cash optimisation.</li></ul></div></details>
+<h3 class="grp">Vertical solutions</h3>
+<details data-t="nlp vlm"><summary><h3>Trade finance document intelligence</h3><span class="tags"><i>Led</i><i>Client-facing</i></span><span class="res">97%+ classification accuracy. 80 to 91% exact-match field extraction. Two new bank clients onboarded.</span></summary>
+<div class="pb"><ul>
+<li>Led the build: layout-aware NLP models and vision-language models, with a Business Rules Management System layer on top.</li></ul></div></details>
+<details data-t="yolo qwen vllm ocr vlm"><summary><h3>Indian ID card extraction</h3><span class="tags"><i>Engineered and deployed</i><i>In production</i></span><span class="res">Detection, extraction and redaction. 96.8% mAP@50, 98% recall, 100ms P95.</span></summary>
+<div class="pb"><ul>
+<li>Card segregation, field-level extraction and regulatory redaction, shipped as two parallel production architectures.</li>
+<li>CPU pipeline: YOLOX and YOLOv8 for field detection, with Google Vision and Azure OCR for extraction.</li>
+<li>GPU pipeline: Qwen3.5-9B served through vLLM, folding detection, extraction and redaction into one model call.</li></ul></div></details>
+<details data-t="geo detectron tt"><summary><h3>Invoice processing</h3><span class="tags"><i>Built end-to-end</i><i>On-premise and cloud</i></span><span class="res">Digital and handwritten invoices, on CPU or GPU, on-premise or cloud.</span></summary>
+<div class="pb"><ul>
+<li>Key-value extraction, table detection and line-item extraction in one system.</li>
+<li>A validation layer after extraction for reconciliation and sanity checks.</li>
+<li>Built with GeoLayoutLM, Detectron2, Table Transformer, TABLET and classical CV.</li></ul></div></details>
+</section>
+
+<section class="w" id="lens" style="padding-top:8px">
+<h2>How I weigh a build</h2>
+<p class="lead">The ID-card system ships two architectures. Set the constraints and see which one I would reach for first.</p>
+<div class="lens">
+<div class="ln"><span class="lab">Where can the data go?</span><div class="seg" data-g="data"><button type="button" data-v="cloud" aria-pressed="true">Cloud APIs are fine</button><button type="button" data-v="prem" aria-pressed="false">Must stay on-premise</button></div></div>
+<div class="ln"><span class="lab">Hardware</span><div class="seg" data-g="hw"><button type="button" data-v="cpu" aria-pressed="true">CPU only</button><button type="button" data-v="gpu" aria-pressed="false">GPU available</button></div></div>
+<div class="ln"><span class="lab">Layouts</span><div class="seg" data-g="lay"><button type="button" data-v="few" aria-pressed="true">Few fixed templates</button><button type="button" data-v="many" aria-pressed="false">Many unseen layouts</button></div></div>
+<div class="out" id="lout" aria-live="polite"></div>
+</div>
+<p class="note">A simplified lens, not a benchmark. The real call comes from measured cost per document, accuracy and latency on the client's own data.</p>
+</section>
+<section class="w" id="stack" style="padding-top:8px">
+<h2>Stack</h2>
+<p class="lead">Tap a tool. The systems above that used it will light up and the rest will fade.</p>
+<div class="chips" id="chips"></div>
+<p class="note">Also in daily use: Python, PyTorch, Hugging Face, FastAPI, Docker, Airflow, Azure, GCP, AWS.</p>
+</section>
+
+<section class="w" id="lead" style="padding-top:8px">
+<h2>Leading the team</h2>
+<p class="lead">I lead data scientists and AI engineers on two kinds of work at once.</p>
+<div class="two">
+<div><h3>Vertical solutions</h3><p>One industry, one client's problem, hard accuracy and latency targets. Trade finance, ID verification, invoices.</p></div>
+<div><h3>Horizontal platforms</h3><p>Reusable foundations other teams build on. The GenAI platform, the Data Science Studio, the agentic framework.</p></div>
+</div>
+<ul class="ev" id="ev">
+<li>Led 40+ customer-facing POCs.</li>
+<li>Led delivery of the trade finance solution, which onboarded two new banking clients.</li>
+<li>Mentored 30+ students in Python, machine learning and AI.</li>
+</ul>
+</section>
+<section class="w path" id="path" style="padding-top:8px">
+<h2>Path</h2>
+<div><span class="lab">Oct 2025 to now</span><span><h3>Senior Data Scientist, Newgen Software</h3><p>Lead data scientists and AI engineers across vertical solutions and horizontal platforms: document intelligence, the GenAI platform and the agentic framework. Working with the Reserve Bank of India on a GenAI decision-support system for regulatory document analysis.</p></span></div>
+<div><span class="lab">Jul 2022 to Sep 2025</span><span><h3>Data Scientist, Newgen Software</h3><p>Built the IDP platform, CV and NLP models for detection and table structure, and the Data Science Studio.</p></span></div>
+<div><span class="lab">Nov 2021 to Jan 2022</span><span><h3>Technical mentor, Cureeya</h3><p>Mentored 30+ students in Python, machine learning and AI.</p></span></div>
+<div><span class="lab">2019 to 2022</span><span><h3>B.Sc. (Hons.) Computer Science, University of Delhi</h3><p>GPA 9.49. Top-3 rank for three consecutive years.</p></span></div>
+</section>
+
+<section class="w end" id="contact">
+<h2>Hiring a senior or lead data scientist?</h2>
+<p class="lead" style="margin-bottom:0">Tell me which part of research, development and deployment your team is short on, and how big the team is.</p>
+<div id="links"></div>
+</section>
+</main>
+<footer>Khushal Rastogi, Delhi NCR.</footer>
+
+<script>
+const CFG={email:"khushalrustagi@gmail.com",linkedin:"https://www.linkedin.com/in/khushal-rastogi",github:"",hf:"",blog:"",resume:"",teamFacts:[],lead:[],writing:[]};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+$("#links").innerHTML=[["Email","mailto:"+CFG.email],["LinkedIn",CFG.linkedin],["GitHub",CFG.github],["Hugging Face",CFG.hf],["Writing",CFG.blog],["Resume",CFG.resume]].filter(x=>x[1]&&x[1]!=="mailto:").map(([n,u])=>`<a href="${u}"${u.startsWith("http")?' target="_blank" rel="noopener"':""}>${n}</a>`).join("");
+
+$("#theme").onclick=()=>{const d=document.documentElement,c=d.dataset.theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");d.dataset.theme=c==="dark"?"light":"dark"};
+
+const doc=$("#doc"),fields=$$("#doc .f");let T=[];
+const clr=()=>{T.forEach(clearTimeout);T=[]};
+function detect(){clr();doc.classList.remove("redact");fields.forEach(f=>f.classList.remove("on"));
+const step=reduce?0:230;doc.classList.add("scan");
+fields.forEach((f,i)=>T.push(setTimeout(()=>f.classList.add("on"),200+i*step)));
+const end=200+fields.length*step;T.push(setTimeout(()=>doc.classList.remove("scan"),end+300));return end}
+function redact(){const done=fields.every(f=>f.classList.contains("on"));const t=done?0:detect();T.push(setTimeout(()=>doc.classList.add("redact"),t+350))}
+$("#det").onclick=detect;$("#red").onclick=redact;
+$("#rst").onclick=()=>{clr();doc.classList.remove("redact","scan");fields.forEach(f=>f.classList.remove("on"))};
+
+const P={cpu:{s:["Segregate the card type","Detect fields with YOLOX and YOLOv8","Read text with Google Vision and Azure OCR","Redact regulated fields"],n:"Four stages, no GPU needed."},
+gpu:{s:["Qwen3.5-9B on vLLM: detect, extract and redact in one call"],n:"One model call replaces the detection, extraction and redaction stages."}};
+function pipe(k){$$(".seg button[data-p]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.p===k));
+$("#stg").innerHTML=P[k].s.map((t,i)=>`<li><b>${i+1}</b>${t}</li>`).join("");$("#pn").textContent=P[k].n;
+$$("#stg li").forEach((li,i)=>setTimeout(()=>li.classList.add("lit"),reduce?0:250+i*350))}
+$$(".seg button[data-p]").forEach(b=>b.onclick=()=>pipe(b.dataset.p));
+pipe("cpu");setTimeout(detect,reduce?0:700);
+
+const tools={yolo:"YOLOX / YOLOv8",qwen:"Qwen3.5",vllm:"vLLM",ocr:"OCR",vlm:"VLMs",nlp:"Layout-aware NLP",geo:"GeoLayoutLM",detectron:"Detectron2",tt:"Table Transformer",rag:"RAG",emb:"Embeddings",hybrid:"Hybrid retrieval",quant:"Quantisation",agents:"Agents"};
+$("#chips").innerHTML=Object.entries(tools).map(([k,v])=>`<button class="chip" type="button" data-k="${k}" aria-pressed="false">${v}</button>`).join("");
+$$(".chip").forEach(c=>c.onclick=()=>{c.setAttribute("aria-pressed",c.getAttribute("aria-pressed")!=="true");
+const on=$$(".chip[aria-pressed=true]").map(x=>x.dataset.k);
+$$(".sys details").forEach(d=>{const m=on.length&&d.dataset.t.split(" ").some(t=>on.includes(t));
+d.classList.toggle("hit",!!m);d.classList.toggle("dim",on.length>0&&!m);if(on.length)d.open=!!m});
+if(on.length)$(".sys").scrollIntoView({block:"start"})});
+
+const TR={rag:{q:"Which covenants changed after the 2024 amendment, and who signed off?",s:[["Decompose","Split into two sub-queries: covenant changes, and sign-off history."],["Retrieve","Vector search over clause chunks, plus a relational filter on amendment date."],["Rerank","Keep the passages that answer each sub-query."],["Answer","Compose the response with the source clauses cited."]]},
+agt:{q:"Label a new batch of images for a document type the system has not seen.",s:[["Plan","Pick the label schema and a confidence threshold."],["Propose","A vision-language model drafts labels and fields."],["Verify","Rules and a second pass check each draft."],["Route","Low-confidence items go to a human reviewer."],["Learn","Corrections feed the next pass. Loop until the threshold holds."]]}};
+Object.keys(TR).forEach(k=>{$("#q-"+k).textContent=TR[k].q;$("#stg-"+k).innerHTML=TR[k].s.map((x,i)=>`<li><b>${i+1}</b><span><em>${x[0]}.</em> ${x[1]}</span></li>`).join("")});
+let T2=[];
+function runTrace(k){T2.forEach(clearTimeout);T2=[];const lis=[...$("#stg-"+k).children],passes=k==="agt"?2:1,gap=reduce?0:380;let t=0;
+for(let p=1;p<=passes;p++){const at=t;T2.push(setTimeout(()=>{lis.forEach(l=>l.classList.remove("lit"));$("#ps-"+k).textContent=passes>1?"Pass "+p+" of "+passes:""},at));
+lis.forEach((l,i)=>T2.push(setTimeout(()=>l.classList.add("lit"),at+(reduce?0:200+i*gap))));t+=reduce?0:200+lis.length*gap+700}}
+$$("[data-run]").forEach(b=>b.onclick=()=>runTrace(b.dataset.run));
+$$(".tabs button").forEach(b=>b.onclick=()=>{const k=b.dataset.tab;$$(".tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));["doc","rag","agt"].forEach(n=>$("#p-"+n).hidden=n!==k);
+if(k==="doc"){detect();pipe($(".seg button[data-p][aria-pressed=true]").dataset.p)}else runTrace(k)});
+$("#ev").insertAdjacentHTML("beforeend",CFG.teamFacts.map(t=>`<li>${t}</li>`).join(""));
+
+const LN={data:"cloud",hw:"cpu",lay:"few"};
+const R={"cloud|cpu|few":["Detector pipeline with cloud OCR","Fixed templates suit a trained detector, and it runs without a GPU at the lowest cost per document."],
+"cloud|cpu|many":["Detector pipeline, cloud OCR and a review queue","The detector covers the common layouts. Route low-confidence cards to a human instead of forcing a bigger model onto CPU."],
+"cloud|gpu|few":["Detector pipeline first","A VLM adds serving cost that fixed templates do not need. Keep it as the fallback."],
+"cloud|gpu|many":["Single VLM call","One model absorbs the layout variety and replaces the detection, extraction and redaction stages."],
+"prem|cpu|few":["Detector pipeline with self-hosted OCR","Cloud OCR is out and a 9B model has nowhere to run. A trained detector plus a local OCR engine fits."],
+"prem|cpu|many":["Detector pipeline, self-hosted OCR and a review queue","Unseen layouts are the risk without a GPU. Plan for human review and retrain the detector on the misses."],
+"prem|gpu|few":["Detector pipeline, with a self-hosted VLM as fallback","Both fit on-premise. Start with the cheaper path and measure before moving everything to the VLM."],
+"prem|gpu|many":["Single self-hosted VLM call","Layout variety favours one model, and serving it yourself keeps the data on-premise."]};
+function lens(){const r=R[[LN.data,LN.hw,LN.lay].join("|")];$("#lout").innerHTML=`<strong>${r[0]}</strong><p>${r[1]}</p>`}
+$$(".lens .seg").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{LN[g.dataset.g]=b.dataset.v;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));lens()}));lens();
+if(CFG.lead.length)$("#ev").insertAdjacentHTML("beforebegin",`<div class="figs" style="margin-bottom:22px">${CFG.lead.map(([v,l])=>`<div class="fig"><b>${v}</b><span>${l}</span></div>`).join("")}</div>`);
+if(CFG.writing.length){const sc=document.createElement("section");sc.className="w";sc.id="research";sc.style.paddingTop="8px";
+sc.innerHTML=`<h2>Writing and open work</h2><p class="lead">Methods, evaluations and code I have made public.</p><ul class="ev">${CFG.writing.map(([t,u,d])=>`<li><a href="${u}" target="_blank" rel="noopener"><strong>${t}</strong></a><br>${d}</li>`).join("")}</ul>`;$("#lead").before(sc)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);
+const b=e.target,n=+b.dataset.n,d=+(b.dataset.d||0),s=b.dataset.s||"";if(reduce)return;
+const t0=performance.now();(function f(t){const p=Math.min((t-t0)/900,1),v=n*(1-Math.pow(1-p,3));b.textContent=v.toFixed(d)+s;if(p<1)requestAnimationFrame(f)})(t0)}),{threshold:.6});
+$$(".fig b[data-n]").forEach(b=>io.observe(b));
+</script>
+</body>
+</html>
