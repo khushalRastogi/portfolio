@@ -6,6 +6,10 @@
 <meta name="description" content="Senior Data Scientist at Newgen Software. Document intelligence, RAG and agentic systems from research to production, and the team that ships them.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232a3cff'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='36' font-weight='700' text-anchor='middle' fill='white'%3EK%3C/text%3E%3C/svg%3E">
 <meta name="theme-color" content="#0f1b2d">
+<!-- patch-2026-11-17 -->
+<meta name="author" content="Khushal Rastogi">
+<meta property="article:author" content="https://www.linkedin.com/in/khushal-rastogi">
+<meta property="article:published_time" content="2026-11-17">
 <link rel="canonical" href="https://khushal-rastogi.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Khushal Rastogi: Senior Data Scientist">
@@ -16,8 +20,11 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <title>Khushal Rastogi: Senior Data Scientist, research to production</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:"Bricolage Grotesque";src:url(fonts/bricolage-latin.woff2) format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Newsreader";src:url(fonts/newsreader-latin.woff2) format("woff2");font-weight:400 500;font-style:normal;font-display:swap}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 --paper:#eef1f6;--sheet:#fff;--ink:#0f1b2d;--mut:#52607a;--line:#cdd5e2;--stamp:#2a3cff;--hl:#ffe45c;--hlt:#0f1b2d}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0c1424;--sheet:#141e33;--ink:#e8edf7;--mut:#9aa8c3;--line:#26334f;--stamp:#8c9bff;--hl:#e6c93a;--hlt:#0c1424}}
@@ -36,7 +43,7 @@ nav{display:flex;gap:18px}nav a{text-decoration:none;font-weight:600;font-size:.
 .tg{background:none;border:1px solid var(--line);color:var(--ink);padding:5px 12px;border-radius:99px;font-size:.85rem;font-weight:600;cursor:pointer}
 .w{max-width:1040px;margin:auto;padding:64px 20px}
 .hero{display:grid;gap:44px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center;padding-top:48px}
-h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.02;letter-spacing:-.025em;font-variation-settings:"opsz" 96}
+h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);text-wrap:balance;line-height:1.02;letter-spacing:-.025em;font-variation-settings:"opsz" 96}
 .sub{margin-top:20px;font-size:1.2rem;max-width:34ch;color:var(--mut)}
 .cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
 .btn{font-weight:600;font-size:.95rem;padding:10px 18px;border-radius:6px;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
@@ -46,7 +53,7 @@ h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.02;letter-
 .dt{font:600 .8rem "Bricolage Grotesque",sans-serif;color:var(--mut);margin-bottom:14px}
 .top{display:flex;gap:16px;align-items:flex-start}
 .col{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding-top:4px}
-.f{position:relative;display:inline-block;margin-top:11px;padding:2px 7px;border:1.5px solid transparent;border-radius:3px;font-weight:600;font-size:.95rem;transition:border-color .25s,background .35s,color .35s}
+.f{position:relative;display:inline-block;margin-top:11px;padding:2px 7px;border:1.5px solid transparent;border-radius:3px;font-weight:600;font-size:.95rem;transition:background .35s,color .35s}
 .f.on{border-color:var(--stamp)}
 .f.on::after{content:attr(data-l) " " attr(data-c);position:absolute;top:-11px;left:-1px;background:var(--stamp);color:var(--paper);font-size:.64rem;font-weight:600;padding:0 5px;border-radius:2px;line-height:1.5;white-space:nowrap}
 .ph{width:76px;height:92px;padding:0;background:radial-gradient(circle at 50% 34%,var(--mut) 0 14px,transparent 15px),radial-gradient(ellipse at 50% 100%,var(--mut) 0 32px,transparent 33px),var(--line)}
@@ -57,8 +64,8 @@ h1{font-weight:800;font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.02;letter-
 .doc.redact .f.on[data-s]{background:var(--ink);color:transparent;border-color:var(--ink)}
 .doc.redact .f.on[data-s]::after{background:var(--ink);color:var(--paper)}
 .doc.redact .ph.on,.doc.redact .stp.on{background:var(--ink)}
-.doc.scan::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--stamp);box-shadow:0 0 14px 2px var(--stamp);animation:sc 2.4s linear}
-@keyframes sc{from{top:0}to{top:100%}}
+.doc.scan::before{content:"";position:absolute;left:0;right:0;top:0;height:100%;pointer-events:none;background:linear-gradient(var(--stamp),var(--stamp)) 0 0/100% 2px no-repeat,linear-gradient(to bottom,color-mix(in srgb,var(--stamp) 28%,transparent),transparent) 0 2px/100% 22px no-repeat;animation:sc 2.4s linear}
+@keyframes sc{from{transform:translateY(-4px)}to{transform:translateY(100%)}}
 .ctl{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
 .seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden}
 .seg button{border:0;background:none;color:var(--ink);padding:8px 14px;font-weight:600;font-size:.88rem;cursor:pointer}
@@ -121,6 +128,7 @@ footer{max-width:1040px;margin:auto;padding:0 20px 40px;color:var(--mut);font-si
 .out strong{font:600 1.15rem "Bricolage Grotesque",sans-serif}.out p{color:var(--mut);margin-top:4px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}.doc.scan::before{animation:none}html{scroll-behavior:auto}}
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfilePage", "url": "https://khushal-rastogi.vercel.app/", "name": "Khushal Rastogi: Senior Data Scientist", "datePublished": "2026-11-17", "dateModified": "2026-11-17", "author": {"@type": "Person", "name": "Khushal Rastogi", "jobTitle": "Senior Data Scientist", "url": "https://khushal-rastogi.vercel.app/", "worksFor": {"@type": "Organization", "name": "Newgen Software"}, "alumniOf": {"@type": "CollegeOrUniversity", "name": "University of Delhi"}, "knowsAbout": ["Document AI", "Retrieval-augmented generation", "Agentic AI systems", "Computer vision", "Machine learning"], "sameAs": ["https://www.linkedin.com/in/khushal-rastogi", "https://github.com/khushalRastogi", "https://huggingface.co/khushalR"]}, "mainEntity": {"@type": "Person", "name": "Khushal Rastogi", "jobTitle": "Senior Data Scientist", "url": "https://khushal-rastogi.vercel.app/", "worksFor": {"@type": "Organization", "name": "Newgen Software"}, "alumniOf": {"@type": "CollegeOrUniversity", "name": "University of Delhi"}, "knowsAbout": ["Document AI", "Retrieval-augmented generation", "Agentic AI systems", "Computer vision", "Machine learning"], "sameAs": ["https://www.linkedin.com/in/khushal-rastogi", "https://github.com/khushalRastogi", "https://huggingface.co/khushalR"]}}</script>
 </head>
 <body>
 <header><div>
@@ -289,7 +297,7 @@ footer{max-width:1040px;margin:auto;padding:0 20px 40px;color:var(--mut);font-si
 <section class="w end" id="contact">
 <h2>Hiring a senior or lead data scientist?</h2>
 <p class="lead" style="margin-bottom:0">Tell me which part of research, development and deployment your team is short on, and how big the team is.</p>
-<div id="links"></div>
+<div id="links"><a href="https://www.linkedin.com/in/khushal-rastogi" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/khushalRastogi" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/khushalR" target="_blank" rel="noopener">Hugging Face</a><a href="https://drive.google.com/file/d/1pzQX6D_yD0qqjIG5P2Wd3qmBgMgjox5H/view?usp=drive_link" target="_blank" rel="noopener">Resume</a></div>
 </section>
 </main>
 <footer>Khushal Rastogi, Delhi NCR.</footer>
