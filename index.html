@@ -295,7 +295,7 @@ footer{max-width:1040px;margin:auto;padding:0 20px 40px;color:var(--mut);font-si
 <footer>Khushal Rastogi, Delhi NCR.</footer>
 
 <script>
-const CFG={email:"khushalrustagi@gmail.com",linkedin:"https://www.linkedin.com/in/khushal-rastogi",github:"",hf:"",blog:"",resume:"",teamFacts:[],lead:[],writing:[]};
+const CFG={email:"khushalrustagi@gmail.com",linkedin:"https://www.linkedin.com/in/khushal-rastogi",github:"https://github.com/khushalRastogi",hf:"https://huggingface.co/khushalR",blog:"",resume:"https://drive.google.com/file/d/1pzQX6D_yD0qqjIG5P2Wd3qmBgMgjox5H/view?usp=drive_link",teamFacts:[],lead:[],writing:[]};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
 $("#links").innerHTML=[["Email","mailto:"+CFG.email],["LinkedIn",CFG.linkedin],["GitHub",CFG.github],["Hugging Face",CFG.hf],["Writing",CFG.blog],["Resume",CFG.resume]].filter(x=>x[1]&&x[1]!=="mailto:").map(([n,u])=>`<a href="${u}"${u.startsWith("http")?' target="_blank" rel="noopener"':""}>${n}</a>`).join("");
