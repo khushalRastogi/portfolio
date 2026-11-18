@@ -4,6 +4,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://portfolio-mkk7.onrender.com/api/:path*"
+    },
+    {
+      "source": "/samples/:path*",
+      "destination": "https://portfolio-mkk7.onrender.com/samples/:path*"
     }
   ],
   "headers": [
