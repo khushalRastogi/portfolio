@@ -17,6 +17,40 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
 
+// Only set on Vercel; Render runs the real detector.
+const BACKEND_URL = process.env.VERCEL
+  ? (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "")
+  : "";
+
+async function proxyToBackend(req, res) {
+  try {
+    const headers = {};
+    for (const name of ["content-type", "accept"]) {
+      if (req.headers[name]) headers[name] = req.headers[name];
+    }
+    let body;
+    if (!["GET", "HEAD"].includes(req.method)) {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      body = Buffer.concat(chunks);
+    }
+    const upstream = await fetch(`${BACKEND_URL}${req.originalUrl}`, {
+      method: req.method,
+      headers,
+      body,
+      signal: AbortSignal.timeout(120000),
+    });
+    res.status(upstream.status);
+    for (const name of ["content-type", "cache-control", "etag"]) {
+      const v = upstream.headers.get(name);
+      if (v) res.setHeader(name, v);
+    }
+    res.send(Buffer.from(await upstream.arrayBuffer()));
+  } catch {
+    res.status(502).json({ error: "Detection backend is unavailable. Please retry in a minute." });
+  }
+}
+
 const detector = new FieldDetector(__dirname);
 
 const upload = multer({
@@ -30,6 +64,10 @@ const upload = multer({
     }
   },
 });
+
+if (BACKEND_URL) {
+  app.use(["/api", "/samples"], proxyToBackend);
+}
 
 app.use(express.json({ limit: "1mb" }));
 
