@@ -19,12 +19,23 @@ const HOST = "0.0.0.0";
 
 const BACKEND_URL = (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "");
 
-// Vercel adds x-vercel-id to every request; the proxy never forwards it, so Render serves locally.
-const shouldProxy = (req) => !process.env.RENDER && Boolean(req.headers["x-vercel-id"] || process.env.API_BACKEND_URL);
+// Proxy everything except localhost, Render itself, or a request already proxied (loop guard).
+const shouldProxy = (req) => {
+  if (process.env.RENDER || req.headers["x-portfolio-proxied"]) return false;
+  const host = String(req.headers.host || "").split(":")[0].toLowerCase();
+  if (host === "localhost" || host === "127.0.0.1" || host === "[::1]" || host.endsWith(".onrender.com")) {
+    return Boolean(process.env.API_BACKEND_URL);
+  }
+  return true;
+};
+
+app.get("/__proxy-debug", (req, res) => {
+  res.json({ build: "proxy-v4", shouldProxy: shouldProxy(req), host: req.headers.host, backend: BACKEND_URL });
+});
 
 async function proxyToBackend(req, res) {
   try {
-    const headers = {};
+    const headers = { "x-portfolio-proxied": "1" };
     for (const name of ["content-type", "accept"]) {
       if (req.headers[name]) headers[name] = req.headers[name];
     }
