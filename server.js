@@ -17,10 +17,18 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
 
-// Only set on Vercel; Render runs the real detector.
-const BACKEND_URL = process.env.VERCEL
-  ? (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "")
-  : "";
+// Vercel may not expose VERCEL at runtime; its functions always run from /var/task on Lambda.
+const ON_VERCEL = Boolean(
+  process.env.VERCEL ||
+    process.env.LAMBDA_TASK_ROOT ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    __dirname.startsWith("/var/task")
+);
+const BACKEND_URL = process.env.RENDER
+  ? ""
+  : process.env.API_BACKEND_URL || ON_VERCEL
+    ? (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "")
+    : "";
 
 async function proxyToBackend(req, res) {
   try {
@@ -41,6 +49,7 @@ async function proxyToBackend(req, res) {
       signal: AbortSignal.timeout(120000),
     });
     res.status(upstream.status);
+    res.setHeader("x-served-by", "render-via-vercel");
     for (const name of ["content-type", "cache-control", "etag"]) {
       const v = upstream.headers.get(name);
       if (v) res.setHeader(name, v);
