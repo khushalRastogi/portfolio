@@ -17,18 +17,10 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
 
-// Vercel may not expose VERCEL at runtime; its functions always run from /var/task on Lambda.
-const ON_VERCEL = Boolean(
-  process.env.VERCEL ||
-    process.env.LAMBDA_TASK_ROOT ||
-    process.env.AWS_LAMBDA_FUNCTION_NAME ||
-    __dirname.startsWith("/var/task")
-);
-const BACKEND_URL = process.env.RENDER
-  ? ""
-  : process.env.API_BACKEND_URL || ON_VERCEL
-    ? (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "")
-    : "";
+const BACKEND_URL = (process.env.API_BACKEND_URL || "https://portfolio-mkk7.onrender.com").replace(/\/$/, "");
+
+// Vercel adds x-vercel-id to every request; the proxy never forwards it, so Render serves locally.
+const shouldProxy = (req) => !process.env.RENDER && Boolean(req.headers["x-vercel-id"] || process.env.API_BACKEND_URL);
 
 async function proxyToBackend(req, res) {
   try {
@@ -74,9 +66,7 @@ const upload = multer({
   },
 });
 
-if (BACKEND_URL) {
-  app.use(["/api", "/samples"], proxyToBackend);
-}
+app.use(["/api", "/samples"], (req, res, next) => (shouldProxy(req) ? proxyToBackend(req, res) : next()));
 
 app.use(express.json({ limit: "1mb" }));
 
