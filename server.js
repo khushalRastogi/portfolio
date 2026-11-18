@@ -16,6 +16,7 @@ if (fs.existsSync(envPath) && typeof process.loadEnvFile === "function") {
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = "0.0.0.0";
+const API_BACKEND_URL = (process.env.API_BACKEND_URL || "").replace(/\/$/, "");
 
 const detector = new FieldDetector(__dirname);
 
@@ -164,6 +165,44 @@ app.use(
 app.get("/{*splat}", (_req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
+
+if (API_BACKEND_URL) {
+  app.use("/api", async (req, res) => {
+    try {
+      const targetUrl = `${API_BACKEND_URL}${req.originalUrl}`;
+      const headers = new Headers();
+      for (const [key, value] of Object.entries(req.headers)) {
+        const lowerKey = key.toLowerCase();
+        if (value !== undefined && !["host", "connection", "content-length"].includes(lowerKey)) {
+          headers.set(key, Array.isArray(value) ? value.join(", ") : value);
+        }
+      }
+
+      const chunks = [];
+      if (!["GET", "HEAD"].includes(req.method)) {
+        for await (const chunk of req) chunks.push(Buffer.from(chunk));
+      }
+      const body = chunks.length ? Buffer.concat(chunks) : undefined;
+
+      const upstream = await fetch(targetUrl, {
+        method: req.method,
+        headers,
+        body,
+        redirect: "follow",
+      });
+
+      res.status(upstream.status);
+      upstream.headers.forEach((value, key) => {
+        if (!["connection", "transfer-encoding", "content-encoding", "content-length"].includes(key)) {
+          res.setHeader(key, value);
+        }
+      });
+      res.send(Buffer.from(await upstream.arrayBuffer()));
+    } catch {
+      res.status(502).json({ error: "Detection API backend is unavailable." });
+    }
+  });
+}
 
 app.listen(PORT, HOST, () => {
   console.log(`Server listening on http://${HOST}:${PORT}`);
