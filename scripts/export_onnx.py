@@ -13,6 +13,13 @@ Usage:
         --checkpoint yoloX_M_iter4.pth \
         --output-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Medium-ONNX/Iteration-4-3rd_Plus_Aadhaar_VID_plus_VoterID_Addition
     
+    python scripts/export_onnx.py \
+        --model-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Small/Iteration-6-5th_iter_plus_New_VoterID_Samples_Addition \
+        --checkpoint yoloX_S_iter6.pth \
+        --output-dir /home/khushal/Downloads/IDX_MODELS/IDX/Indian_IDX/YoloX-Small-ONNX/Iteration-6-5th_iter_plus_New_VoterID_Samples_Addition
+    
+    
+    
     # Optional: export and push directly to a private Hugging Face Hub repo
     HF_TOKEN=hf_xxx python scripts/export_onnx.py \
         --model-dir /path/to/checkpoint_dir \

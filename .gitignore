@@ -10,3 +10,4 @@ node_modules
 *.pth
 *.onnx
 __pycache__
+proxy_debug_output.log
