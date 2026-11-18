@@ -88,8 +88,8 @@ footer{max-width:1200px;margin:auto;padding:0 20px 36px;color:var(--mut);font-si
 </head>
 <body>
 <header><div>
-<strong><a href="/">Khushal Rastogi</a></strong>
-<nav><a href="/">Home</a><a href="/#systems">Work</a><a href="/try-it-out" aria-current="page">Try it out</a></nav>
+<strong><a href="./">Khushal Rastogi</a></strong>
+<nav><a href="./">Home</a><a href="./#systems">Work</a><a href="try-it-out.html" aria-current="page">Try it out</a></nav>
 <button class="tg" id="theme" type="button">Theme</button>
 </div></header>
 
@@ -99,7 +99,7 @@ footer{max-width:1200px;margin:auto;padding:0 20px 36px;color:var(--mut);font-si
 <h1>ID Field Detection</h1>
 <p class="lead">Select a sample identity card or upload an image from your device to inspect detected field positions, adjust confidence filtering, and toggle field boxes or redaction.</p>
 </div>
-<a class="btn sm" href="/">Back to portfolio</a>
+<a class="btn sm" href="./">Back to portfolio</a>
 </section>
 
 <div class="wb">
@@ -170,6 +170,17 @@ footer{max-width:1200px;margin:auto;padding:0 20px 36px;color:var(--mut);font-si
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+const isLocalPreview=(["localhost","127.0.0.1","::1"].includes(location.hostname)&&location.port!=="3000");
+const API_BASE=isLocalPreview?`${location.protocol}//${location.hostname}:3000`:"";
+const apiUrl=path=>`${API_BASE}${path}`;
+async function readApiResponse(resp,fallbackMessage){
+  const body=await resp.text();
+  let data;
+  try{data=JSON.parse(body)}catch{throw new Error(`${fallbackMessage} The API server returned ${resp.status} ${resp.statusText}; open this site with "npm start" on port 3000.`)}
+  if(!resp.ok)throw new Error(data.error||fallbackMessage);
+  return data;
+}
 
 const savedTheme=localStorage.getItem("theme");
 if(savedTheme==="dark"||savedTheme==="light")document.documentElement.dataset.theme=savedTheme;
@@ -432,16 +443,16 @@ async function runSample(sample){
   if(state.objectUrl){URL.revokeObjectURL(state.objectUrl);state.objectUrl=null}
   state.activeSampleId=sample.id;
   $$(".sample-btn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===sample.id?"true":"false"));
-  showPreviewImage(sample.url);
+  showPreviewImage(apiUrl(sample.url));
   setLoading(true);
   setNotice(null);
   try{
-    const resp=await fetch("/api/detect",{
+    const resp=await fetch(apiUrl("/api/detect"),{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({sampleId:sample.id})
     });
-    const data=await resp.json();
+    const data=await readApiResponse(resp,"Detection failed.");
     if(!resp.ok)throw new Error(data.error||"Detection failed.");
     applyDetectionResponse(data);
   }catch(err){
@@ -463,8 +474,8 @@ async function runUpload(file){
   try{
     const fd=new FormData();
     fd.append("image",file);
-    const resp=await fetch("/api/detect",{method:"POST",body:fd});
-    const data=await resp.json();
+    const resp=await fetch(apiUrl("/api/detect"),{method:"POST",body:fd});
+    const data=await readApiResponse(resp,"Upload detection failed.");
     if(!resp.ok)throw new Error(data.error||"Upload detection failed.");
     applyDetectionResponse(data);
   }catch(err){
@@ -514,16 +525,16 @@ $("#btn-none").onclick=()=>{
 
 async function init(){
   try{
-    const [cfgRes,sampRes]=await Promise.all([fetch("/api/workbench-config"),fetch("/api/samples")]);
+    const [cfgRes,sampRes]=await Promise.all([fetch(apiUrl("/api/workbench-config")),fetch(apiUrl("/api/samples"))]);
     if(cfgRes.ok){
-      const cfg=await cfgRes.json();
+      const cfg=await readApiResponse(cfgRes,"Unable to load model configuration.");
       if(typeof cfg.defaultConfThre==="number"){
         state.defaultConf=cfg.defaultConfThre;
         state.confThre=cfg.defaultConfThre;
       }
     }
     if(sampRes.ok){
-      const {samples}=await sampRes.json();
+      const {samples}=await readApiResponse(sampRes,"Unable to load sample images.");
       state.samples=samples||[];
       const strip=$("#sample-strip");
       strip.innerHTML="";
@@ -533,7 +544,7 @@ async function init(){
         btn.className="sample-btn";
         btn.dataset.id=s.id;
         btn.setAttribute("aria-pressed","false");
-        btn.innerHTML=`<img src="${s.url}" alt="${s.name}" loading="lazy"><span>${s.name}</span>`;
+        btn.innerHTML=`<img src="${apiUrl(s.url)}" alt="${s.name}" loading="lazy"><span>${s.name}</span>`;
         btn.onclick=()=>runSample(s);
         strip.appendChild(btn);
       });

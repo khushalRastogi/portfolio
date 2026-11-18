@@ -34,6 +34,26 @@ const upload = multer({
 app.use(express.json({ limit: "1mb" }));
 
 app.use((req, res, next) => {
+  const origin = req.get("Origin");
+  if (origin) {
+    try {
+      const hostname = new URL(origin).hostname;
+      if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Vary", "Origin");
+        res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+      }
+    } catch {
+      // Ignore malformed Origin headers.
+    }
+  }
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
+// Security headers for browser responses
+app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
